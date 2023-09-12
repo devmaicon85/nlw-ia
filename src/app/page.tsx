@@ -1,4 +1,4 @@
-import { ToggleTheme } from "@/components/toggleTheme";
+import { Header } from "@/components/header";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
@@ -12,27 +12,12 @@ import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 
-import { FileVideo2, GithubIcon, Upload, Video, Wand2 } from "lucide-react";
+import { FileVideo2, Upload, Wand2 } from "lucide-react";
 
 export default function Home() {
     return (
         <div className="min-h-screen flex flex-col">
-            <div className="px-6 py-3 flex items-center justify-between border-b">
-                <h1 className="text-xl font-bold">upload.ai</h1>
-
-                <div className="gap-3 items-center flex">
-                    <span className="text-sm text-muted-foreground">
-                        Desenvolvido com 💟 no NLW da Rocketseat
-                    </span>
-
-                    <Separator orientation="vertical" className="h-6" />
-                    <Button variant="outline">
-                        <GithubIcon className="w-4 h-4 mr-2" /> Login
-                    </Button>
-                    <Separator orientation="vertical" className="h-6" />
-                    <ToggleTheme />
-                </div>
-            </div>
+            <Header />
 
             <main className="flex gap-6 p-6 flex-1">
                 <div className="flex flex-col flex-1  gap-4">
@@ -132,7 +117,9 @@ export default function Home() {
                         <div className="space-y-2">
                             <Label>Temperatura</Label>
                             <span className="block text-sm text-muted-foreground italic">
-                                Aumentar a temperatura resulta em respostas mais criativas, porém com maior probabilidade de erros ou incoerências.
+                                Aumentar a temperatura resulta em respostas mais
+                                criativas, porém com maior probabilidade de
+                                erros ou incoerências.
                             </span>
 
                             <Slider
