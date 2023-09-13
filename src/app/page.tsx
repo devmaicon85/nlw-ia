@@ -1,3 +1,4 @@
+import { FormUploadVideo } from "@/components/formUploadVideo";
 import { Header } from "@/components/header";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -12,9 +13,14 @@ import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 
-import { FileVideo2, Upload, Wand2 } from "lucide-react";
+import { Wand2 } from "lucide-react";
 
-export default function Home() {
+export default async function Home() {
+    const fetchPrompt = await fetch(`${process.env.URL_API}/prompts`, {
+        next: { tags: ["prompts"] },
+    });
+    const prompts = await fetchPrompt.json();
+
     return (
         <div className="min-h-screen flex flex-col">
             <Header />
@@ -33,10 +39,9 @@ export default function Home() {
                         />
                     </div>
                     <p className="text-sm text-muted-foreground">
-                        Lembre-se: você pode utilizar a variável{" "}
+                        Lembre-se: você pode utilizar a variável
                         <code className="text-violet-400">
-                            {" "}
-                            {`{transcription}`}{" "}
+                            {` {transcription} `}
                         </code>
                         no seu prompt para adicionar a transcrição do vídeo
                         selecionado
@@ -44,36 +49,7 @@ export default function Home() {
                 </div>
 
                 <aside className="md:w-80 space-y-6">
-                    <form className="space-y-6 flex flex-col">
-                        <label
-                            htmlFor="video"
-                            className="border w-full rounded-md aspect-video justify-center items-center flex cursor-pointer border-dashed text-sm gap-2 text-muted-foreground hover:bg-primary-foreground"
-                        >
-                            <FileVideo2 className="w-4 h-4" />
-                            Selecione um vídeo
-                        </label>
-                        <input
-                            type="file"
-                            id="video"
-                            accept="video/mp4"
-                            className="sr-only"
-                        />
-
-                        <div className="space-y-2">
-                            <Label htmlFor="transcription_prompt">
-                                Prompt de transcrição
-                            </Label>
-                            <Textarea
-                                id="transcription_prompt"
-                                className="h-20 leading-relaxed"
-                                placeholder="Inclua palavras-chave mencionadas no vídeo separadas por vírgula (,)"
-                            />
-                        </div>
-
-                        <Button type="submit" className="w-full">
-                            Carregar vídeo <Upload className="w-4 h-4 ml-2" />
-                        </Button>
-                    </form>
+                    <FormUploadVideo />
 
                     <Separator />
 
@@ -85,12 +61,22 @@ export default function Home() {
                                     <SelectValue placeholder="Selecione um prompt..." />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="title">
-                                        Título do Youtube
-                                    </SelectItem>
-                                    <SelectItem value="description">
-                                        Descrição do Youtube
-                                    </SelectItem>
+                                    {prompts.map(
+                                        (prompt: {
+                                            id: string;
+                                            title: string;
+                                            template: string;
+                                        }) => {
+                                            return (
+                                                <SelectItem
+                                                    value={prompt.id}
+                                                    key={prompt.id}
+                                                >
+                                                    {prompt.title}
+                                                </SelectItem>
+                                            );
+                                        }
+                                    )}
                                 </SelectContent>
                             </Select>
                         </div>
