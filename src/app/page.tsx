@@ -17,7 +17,7 @@ import { Wand2 } from "lucide-react";
 
 export default async function Home() {
     const fetchPrompt = await fetch(`${process.env.URL_API}/prompts`, {
-        next: { tags: ["prompts"] },
+        next: { revalidate: 10},
     });
     const prompts = await fetchPrompt.json();
 
