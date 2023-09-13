@@ -19,7 +19,7 @@ export default function Home() {
         <div className="min-h-screen flex flex-col">
             <Header />
 
-            <main className="flex gap-6 p-6 flex-1">
+            <main className="flex flex-col md:flex-row gap-6 p-6 flex-1">
                 <div className="flex flex-col flex-1  gap-4">
                     <div className="grid grid-rows-2 gap-4 flex-1">
                         <Textarea
@@ -43,7 +43,7 @@ export default function Home() {
                     </p>
                 </div>
 
-                <aside className="w-80 space-y-6">
+                <aside className="md:w-80 space-y-6">
                     <form className="space-y-6 flex flex-col">
                         <label
                             htmlFor="video"

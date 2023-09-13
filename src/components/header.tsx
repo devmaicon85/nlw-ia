@@ -6,10 +6,10 @@ import { Button } from "./ui/button";
 
 export function Header() {
     return (
-            <div className="px-6 py-3 flex items-center justify-between border-b">
+            <div className="px-6 py-3 flex flex-col md:flex-row gap-4 items-center justify-between border-b">
                 <Logo />
 
-                <div className="gap-3 items-center flex">
+                <div className="gap-3 items-center flex ">
                     <span className="text-sm text-muted-foreground">
                         Desenvolvido com 💟 no NLW da Rocketseat
                     </span>
