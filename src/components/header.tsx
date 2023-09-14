@@ -1,6 +1,6 @@
 import { GithubIcon } from "lucide-react";
 import { Logo } from "./logo";
-import { ToggleTheme } from "./toggleTheme";
+import { ToggleTheme } from "./toggle-theme";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 
