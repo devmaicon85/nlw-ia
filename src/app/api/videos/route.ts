@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { openai } from '@/lib/openai';
 import { prisma } from '@/lib/prisma';
-import { randomUUID } from 'crypto';
 
 
 export async function POST(req: NextRequest, res: NextApiResponse) {
@@ -13,11 +12,15 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
 
     // Get file from formData
     const file = formData.get('file');
-    const prompt = formData.get('prompt')?.toString();
+    const keywords = formData.get('keywords')?.toString();
 
 
     if (!file) {
         return NextResponse.json({ error: 'File not found' })
+    }
+
+    if (!keywords) {
+        return NextResponse.json({ error: 'Keywords not found' })
     }
 
     const response = await openai.audio.transcriptions.create({
@@ -26,24 +29,22 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
         language: "pt",
         response_format: "json",
         temperature: 0,
-        prompt,
+        prompt: keywords,
     });
 
 
     const transcription = response.text;
 
-
     const video = await prisma.video.create({
         data: {
-            name: randomUUID(),
-            path: randomUUID(),
-            transcription
+            keywords,
+            transcription,
         }
     })
-    
 
 
 
-    return NextResponse.json({ transcription,  video});
+
+    return NextResponse.json({ transcription, video });
 
 }

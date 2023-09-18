@@ -26,12 +26,12 @@ const statusMessages = {
 };
 
 type Props = {
-    onVideoId: (videoId: string) => void;
-    onTranscription:(transcription: string) => void
+    onTranscription: (transcription: string) => void;
 };
-export function FormUploadVideo({ onVideoId, onTranscription }: Props) {
+
+export function FormUploadVideo({ onTranscription }: Props) {
     const [videoFile, setVideoFile] = useState<File | null>(null);
-    const promptInputRef = useRef<HTMLTextAreaElement>(null);
+    const keywordsInputRef = useRef<HTMLTextAreaElement>(null);
     const [status, setStatus] = useState<Status>("waiting");
 
     async function handleFileSelected(event: ChangeEvent<HTMLInputElement>) {
@@ -48,33 +48,31 @@ export function FormUploadVideo({ onVideoId, onTranscription }: Props) {
     async function handleUploadVideo(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        const prompt = promptInputRef.current?.value;
+        const keywords = keywordsInputRef.current?.value;
 
         if (!videoFile) {
             return;
         }
 
-        if (!prompt) {
-            alert("informe o Prompt");
+        if (!keywords) {
+            alert("informe algumas palavras chaves que tenha no vídeo");
             return;
         }
 
         setStatus("converting");
         const audioFile = await convertVideoToAudio(videoFile);
 
-        setStatus("uploading");
+        setStatus("generating");
+
         const data = new FormData();
         data.append("file", audioFile);
-        data.append("prompt", prompt);
+        data.append("keywords", keywords);
 
-        setStatus("generating");
         const response = await api.post("/videos", data);
-        const videoId = response.data.video.id;
-        const transcription =response.data.video.transcription;
+        const transcription = response.data.video.transcription;
 
         setStatus("success");
 
-        onVideoId(videoId);
         onTranscription(transcription);
     }
 
@@ -110,13 +108,13 @@ export function FormUploadVideo({ onVideoId, onTranscription }: Props) {
             />
 
             <div className="space-y-2">
-                <Label htmlFor="transcription_prompt">
-                    Prompt de transcrição
+                <Label htmlFor="transcription_keywords">
+                    Palavras chaves da transcrição
                 </Label>
                 <Textarea
-                    id="transcription_prompt"
+                    id="transcription_keywords"
                     disabled={status !== "waiting"}
-                    ref={promptInputRef}
+                    ref={keywordsInputRef}
                     className="h-20 leading-relaxed"
                     placeholder="Inclua palavras-chave mencionadas no vídeo separadas por vírgula (,)"
                 />
