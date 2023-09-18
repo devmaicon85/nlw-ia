@@ -1,12 +1,12 @@
 // imports
 import { fetchFile } from '@ffmpeg/util';
-import loadFfmpeg from './load';
+import {getFFmpeg} from './load';
 
 
-export default async function convertVideoToAudio(video: File) {
+export async function convertVideoToAudio(video: File) {
 
 
-    const ffmpeg = await loadFfmpeg();
+    const ffmpeg = await getFFmpeg();
 
     ffmpeg.writeFile('input.mp4', await fetchFile(video));
 

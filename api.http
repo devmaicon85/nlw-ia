@@ -1,0 +1,64 @@
+@baseUrl= http://localhost:3000
+
+
+
+### @name PostPrompts
+POST {{baseUrl}}/prompt
+Content-Type: application/json
+
+{
+    "title": "Descrição do Youtube",
+    "template": "Gere um descrição para o YOUTUBE que tenha conexto com a transcrição do vídeo informada a seguir: '''{transcription}''' "
+}
+
+
+### @name getprompt
+GET {{baseUrl}}/prompts
+
+
+### @name videos
+GET {{baseUrl}}/videos
+
+
+
+
+
+
+### @name uploadVideo
+POST {{baseUrl}}/videos
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+# Authorization: Bearer {{authToken}}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="example.mp3"
+Content-Type: audio/mpeg
+
+< ./example.mp3
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+
+
+
+### @name create-transcription
+POST {{baseUrl}}/videos/ab51dca5-6523-40f0-ba62-0f736845f9c1/transcription
+Content-Type: application/json
+
+{
+    "prompt": "nego di falando por audio no instagram"
+}
+
+
+
+### @name generate-ai-completion
+POST {{baseUrl}}/ai/complete
+Content-Type: application/json
+
+{
+    "videoId": "ab51dca5-6523-40f0-ba62-0f736845f9c1",
+    "temperature": 0.5,
+    "prompt": "Gere um resumo sucinto da transcrição do vídeo informada a seguir: '''{transcription}''' "
+}
+
+
+

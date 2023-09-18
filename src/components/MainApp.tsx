@@ -11,6 +11,7 @@ import { useCompletion } from "ai/react";
 export function MainApp() {
     const [temperature, setTemperature] = useState(0.5);
     const [videoId, setVideoId] = useState<String | null>(null);
+    const [transcription, setTranscription] = useState<String | null>(null);
 
     const {
         input,
@@ -20,9 +21,10 @@ export function MainApp() {
         completion,
         isLoading,
     } = useCompletion({
-        api: `${process.env.NEXT_PUBLIC_API_URL}/ai/complete`,
+        api: `${process.env.NEXT_PUBLIC_API_URL}/ai`,
         body: {
             videoId,
+            transcription,
             temperature,
         },
         headers: {
@@ -58,7 +60,10 @@ export function MainApp() {
             </div>
 
             <aside className="md:w-80 space-y-6">
-                <FormUploadVideo onVideoId={setVideoId} />
+                <FormUploadVideo
+                    onVideoId={setVideoId}
+                    onTranscription={setTranscription}
+                />
 
                 <Separator />
 

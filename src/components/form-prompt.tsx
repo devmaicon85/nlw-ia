@@ -13,7 +13,6 @@ import {
 import { Separator } from "./ui/separator";
 import { Slider } from "./ui/slider";
 
-import { prompts } from "@/app/actions/prompts";
 import { FormEvent, useEffect, useState } from "react";
 import { api } from "@/lib/axios";
 

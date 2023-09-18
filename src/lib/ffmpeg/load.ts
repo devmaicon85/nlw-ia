@@ -1,9 +1,8 @@
-// imports
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { toBlobURL } from '@ffmpeg/util';
 
 let ffmpeg: FFmpeg | null
-export default async function loadFfmpeg(): Promise<FFmpeg> {
+export async function getFFmpeg(): Promise<FFmpeg> {
 
     if (ffmpeg) {
         return ffmpeg

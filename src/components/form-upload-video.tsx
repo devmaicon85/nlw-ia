@@ -4,9 +4,16 @@ import { CheckIcon, FileVideo2, Upload } from "lucide-react";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
-import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import {
+    ChangeEvent,
+    FormEvent,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
 import { api } from "@/lib/axios";
-import convertVideoToAudio from "@/lib/ffmpeg/convert";
+import { convertVideoToAudio } from "@/lib/ffmpeg/convert";
 
 type Status = "waiting" | "converting" | "uploading" | "generating" | "success";
 
@@ -20,13 +27,13 @@ const statusMessages = {
 
 type Props = {
     onVideoId: (videoId: string) => void;
+    onTranscription:(transcription: string) => void
 };
-export function FormUploadVideo({ onVideoId }: Props) {
+export function FormUploadVideo({ onVideoId, onTranscription }: Props) {
     const [videoFile, setVideoFile] = useState<File | null>(null);
     const promptInputRef = useRef<HTMLTextAreaElement>(null);
     const [status, setStatus] = useState<Status>("waiting");
 
-    
     async function handleFileSelected(event: ChangeEvent<HTMLInputElement>) {
         const { files } = event.currentTarget;
 
@@ -47,26 +54,28 @@ export function FormUploadVideo({ onVideoId }: Props) {
             return;
         }
 
+        if (!prompt) {
+            alert("informe o Prompt");
+            return;
+        }
+
         setStatus("converting");
         const audioFile = await convertVideoToAudio(videoFile);
 
-
+        setStatus("uploading");
         const data = new FormData();
         data.append("file", audioFile);
-
-        setStatus("uploading");
-        const response = await api.post("/videos", data);
-
-        const videoId = response.data.video.id;
+        data.append("prompt", prompt);
 
         setStatus("generating");
-        await api.post(`/videos/${videoId}/transcription`, {
-            prompt,
-        });
+        const response = await api.post("/videos", data);
+        const videoId = response.data.video.id;
+        const transcription =response.data.video.transcription;
 
         setStatus("success");
 
         onVideoId(videoId);
+        onTranscription(transcription);
     }
 
     const previewURL = useMemo(() => {
