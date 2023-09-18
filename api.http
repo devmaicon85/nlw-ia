@@ -1,26 +1,8 @@
-@baseUrl= http://localhost:3000
-
-
-
-### @name PostPrompts
-POST {{baseUrl}}/prompt
-Content-Type: application/json
-
-{
-    "title": "Descrição do Youtube",
-    "template": "Gere um descrição para o YOUTUBE que tenha conexto com a transcrição do vídeo informada a seguir: '''{transcription}''' "
-}
+@baseUrl= http://localhost:3000/api
 
 
 ### @name getprompt
 GET {{baseUrl}}/prompts
-
-
-### @name videos
-GET {{baseUrl}}/videos
-
-
-
 
 
 
@@ -38,27 +20,12 @@ Content-Type: audio/mpeg
 
 
 
-
-
-### @name create-transcription
-POST {{baseUrl}}/videos/ab51dca5-6523-40f0-ba62-0f736845f9c1/transcription
-Content-Type: application/json
-
-{
-    "prompt": "nego di falando por audio no instagram"
-}
-
-
-
 ### @name generate-ai-completion
-POST {{baseUrl}}/ai/complete
+POST {{baseUrl}}/ai
 Content-Type: application/json
 
 {
-    "videoId": "ab51dca5-6523-40f0-ba62-0f736845f9c1",
     "temperature": 0.5,
+    "transcription": "transcrição do video.",
     "prompt": "Gere um resumo sucinto da transcrição do vídeo informada a seguir: '''{transcription}''' "
 }
-
-
-
