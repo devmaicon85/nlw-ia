@@ -73,34 +73,40 @@ export function MainApp() {
         <main className="flex flex-col md:flex-row gap-6 p-6 flex-1">
             <div className="flex flex-col flex-1  gap-4">
                 <div className="gap-4 grid grid-rows-3 h-full">
-                    <Textarea
-                        className="p-5 leading-relaxed"
-                        placeholder="Transcrição do vídeo..."
-                        value={transcription}
-                        onChange={(e) => setTranscription(e.target.value)}
-                    />
+                    <div className="flex">
+                        <Textarea
+                            className="p-5 leading-relaxed"
+                            placeholder="Transcrição do vídeo..."
+                            value={transcription}
+                            onChange={(e) => setTranscription(e.target.value)}
+                        />
+                    </div>
 
-                    <Textarea
-                        className="resize-none p-5 leading-relaxed"
-                        placeholder="Inclua o prompt para a IA..."
-                        value={input}
-                        onChange={handleInputChange}
-                    />
-                    <Textarea
-                        className="resize-none p-5 leading-relaxed"
-                        readOnly
-                        placeholder="Resultado gerado pela IA..."
-                        value={completion}
-                    />
+                   <div className="flex flex-col">
+                        <Textarea
+                            className="resize-none p-5 leading-relaxed flex-1"
+                            placeholder="Inclua o prompt para a IA..."
+                            value={input}
+                            onChange={handleInputChange}
+                        />
+                        <p className="text-sm text-muted-foreground ">
+                            Lembre-se: você pode utilizar a variável
+                            <code className="text-violet-400">
+                                {` {transcription} `}
+                            </code>
+                            no seu prompt para adicionar a transcrição do vídeo
+                            selecionado
+                        </p>
+                    </div>
+                   <div className="flex">
+                        <Textarea
+                            className="resize-none p-5 leading-relaxed"
+                            readOnly
+                            placeholder="Resultado gerado pela IA..."
+                            value={completion}
+                        />
+                    </div>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                    Lembre-se: você pode utilizar a variável
-                    <code className="text-violet-400">
-                        {` {transcription} `}
-                    </code>
-                    no seu prompt para adicionar a transcrição do vídeo
-                    selecionado
-                </p>
             </div>
 
             <aside className="md:w-80 space-y-6">
