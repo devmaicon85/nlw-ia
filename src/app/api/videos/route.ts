@@ -23,28 +23,33 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
         return NextResponse.json({ error: 'Keywords not found' })
     }
 
-    const response = await openai.audio.transcriptions.create({
-        file: file as unknown as File,
-        model: "whisper-1",
-        language: "pt",
-        response_format: "json",
-        temperature: 0,
-        prompt: keywords,
-    });
+    try {
+        const response = await openai.audio.transcriptions.create({
+            file: file as unknown as File,
+            model: "whisper-1",
+            language: "pt",
+            response_format: "json",
+            temperature: 0,
+            prompt: keywords,
+        });
 
 
-    const transcription = response.text;
+        const transcription = response.text;
 
-    const video = await prisma.video.create({
-        data: {
-            keywords,
-            transcription,
-        }
-    })
+        const video = await prisma.video.create({
+            data: {
+                keywords,
+                transcription,
+            }
+        })
 
+        return NextResponse.json({ transcription, video });
 
+    } catch (error) {
+        console.log("🚀 ~ file: route.ts:49 ~ POST ~ error:", error)
+        return NextResponse.json({ error })
 
+    }
 
-    return NextResponse.json({ transcription, video });
 
 }
