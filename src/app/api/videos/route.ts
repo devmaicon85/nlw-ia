@@ -4,11 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { openai } from '@/lib/openai';
 import { prisma } from '@/lib/prisma';
 
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};
 
 
 export async function POST(req: NextRequest, res: NextApiResponse) {
